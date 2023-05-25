@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <title>Document</title>
+    <style>
+        html{
+            margin-top: 25vh;
+        }
+        .bi{
+            color: #1DA1F2;
+        }
+        .container{
+            margin-top: 30vh;
+            padding: 10rem 5rem;
+            max-width: 50vh;
+            background: gainsboro;
+            border-radius: 1rem;
+            margin: auto;
+        }
+        #refresh{
+            margin-top: 1rem;
+            padding: 1rem;
+            width: 100%;
+        }
+        #tweet{
+            background: none;
+            border: none;
+        }
+        .bi{
+            font-size: 3rem;
+        }
+        #quotes{
+            height: 5vh;
+      
+            font-size: 1.6rem;
+            font-style: italic;
+        }
+        #author{
+            height: 5vh;
+            margin: 1rem 0;
+            font-size: 1.4rem;
+            color: green;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="tweet"> <i class="bi bi-twitter"></i></button>
+        <div id="quotes"></div>
+        <div id="author"></div>
+        <button id="refresh">New Quotes</button>
+
+    </div>
+
+
+    <script>
+
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const refresh = document.getElementById("refresh");
+        const tweet = document.getElementById("tweet");
+        let realData = "";
+
+
+        const tweetNow = ()=>{
+            let tweetPost = `https://twitter.com/intent/tweet?text=${quotesData.text}`;
+            window.open(tweetPost);
+        }
+
+        const getNewQuotes = ()=>{
+            let rnum = parseInt( Math.random() * 100);
+
+            quotesData = realData[rnum];
+
+            quotes.innerHTML = `${quotesData.text}`;
+
+            quotesData.author == null
+             ? author.innerHTML = "unknown"
+            : author.innerHTML = `${quotesData.author}`;
+ 
+        }
+
+        const getQuotes = async()=>{
+            const api = "https://type.fit/api/quotes"; 
+
+            try {
+                let data = await fetch(api);
+                realData = await data.json();
+
+                getNewQuotes();
+                // console.log(realData[0].text);
+                // console.log(realData[0].author);
+            } catch (error) {
+                
+            }
+        };
+
+        tweet.addEventListener("click", tweetNow)
+        refresh.addEventListener("click", getNewQuotes);
+        getQuotes();
+    </script>
+</body>
+</html>
